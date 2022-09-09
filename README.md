@@ -42,11 +42,54 @@ text_sensor:
       name: "Outlaw Video Input"
 ```
 
+## Sensors
+
+This component provides several sensors.
+
+### Binary Sensors
+- `sensor_power` - Power Status (`true` means ON)
+- `sensor_mute` - Mute Status (`true` means MUTED)
+
+### Sensors
+- `sensor_volume` - Volume Level (-76 to +14 dB)
+
+### Text Sensors
+- `sensor_display` - Text as displayed on face of unit
+- `sensor_audio_in` - Text label of current audio input
+- `sensor_video_in` - Text label of current video input
+-
+
+
+## Services
+
+### `outlaw_power` - Discrete Power On/Off
+
+This service will control the power of the unit, on or off, based on the `power` parameter supplied.
+
+### `outlaw_mute` - Toggle Mute
+
+This service will toggle the current mute state.  The native protocol does not allow directly setting mute on or off.  A future version may provide a means to fake that functionality.
+
+### `outlaw_volume_adj` - Adjust Volume
+
+This service will adjust the volume up or down by 1dB, controlled by the supplied `up` parameter.  The native protocol of the Outlaw does not allow setting a specific volume level.  A future version may provide a means to fake that functionality.
+
+### `outlaw_cmd` - Send Command
+
+This service will send a protocol control code specified in the `cmd` parameter to the unit.  The full list of commands is in the [protocol specification](http://outlawaudio.com/outlaw/docs/990rs232protocol.pdf).  Note that the service expects a decimal value, so the hex values in the document will need to be converted.
+
+Think of this service as a means of virtually "pressing" remote control buttons.  That is the general paradigm of the Outlaw 990 serial protocol.
+
+![Commands (1/2)](command1.png)
+
+![Commands (2/2)](command2.png)
+
+
 ## Example Dashboard Configuration
 
 The code for an example remote control Lovelace dashboard card is shown below.  Note that it uses the entity names as configured above.  The card is also conditional, and it will not be shown if the ESPHome device is unavailable.  Additional elements within the card are also conditional based on whether the Outlaw is turned on.
 
-![](dashboard.png)
+![Dashboard Example](dashboard.png)
 
 Code for the dashboard example:
 
